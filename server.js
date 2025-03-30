@@ -70,7 +70,7 @@ const UserSchema = new mongoose.Schema({
 });
 const User = mongoose.model('User', UserSchema);
 
-// **✅ Register Route**
+// **Register Route**
 app.post('/register', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -83,7 +83,7 @@ app.post('/register', async (req, res) => {
     }
 });
 
-// **✅ Login Route**
+// **Login Route**
 app.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -96,6 +96,17 @@ app.post('/login', async (req, res) => {
         res.status(500).json({ error: 'Login failed' });
     }
 });
+
+app.post("/check-user", async (req, res) => {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (user) {
+        res.json({ exists: true });
+    } else {
+        res.json({ exists: false });
+    }
+});
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
